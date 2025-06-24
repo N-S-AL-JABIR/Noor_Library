@@ -5,6 +5,7 @@ from django.views.generic import FormView
 from django.contrib.auth import login,logout
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
+from Book.models import Purchase
 
 class UserRegistrationView(FormView):
     template_name = "accounts/registration.html"
@@ -35,7 +36,8 @@ class UserProfileView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect("login")
-        return render(request, self.template_name, {"user": request.user})
+        purchases = Purchase.objects.filter(user=request.user).order_by("-purchase_date")
+        return render(request, self.template_name, {"user": request.user, "purchases": purchases})
 
 class UserUpdateView(View):
     template_name = "accounts/update_profile.html"

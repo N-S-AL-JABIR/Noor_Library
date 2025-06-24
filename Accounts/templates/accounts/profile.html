@@ -10,5 +10,13 @@
     <p>Date of Birth: {{ user.account.date_of_birth }}</p>
     <p>Address: {{ user.account.address }}</p>
 </div>
+{% for purchase in purchases %}
+  <div>
+    <h3>Purchased Book: {{ purchase.book.title }}</h3>
+    <p>Purchase Date: {{ purchase.purchase_date }}</p>
+  </div>
+{% empty %}
+  <p>No purchases found.</p>
+{% endfor %}
 
 {% endblock %}

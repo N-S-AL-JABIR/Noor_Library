@@ -1,5 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Hello</h1>
+<h1>Books</h1>
+
+<!-- Category Filter -->
+<ul>
+  {% for category in categories %}
+    <li>
+      <a href="{% url 'category_filter' category.slug %}">
+        {% if category == selected_category %}<strong>{% endif %}
+        {{ category.name }}
+        {% if category == selected_category %}</strong>{% endif %}
+      </a>
+    </li>
+  {% endfor %}
+</ul>
+
+<!-- Book List -->
+{% for book in books %}
+  <div>
+    <h2>{{ book.title }}</h2>
+    <p>Author: {{ book.author }}</p>
+    <p>Category: {{ book.category.name }}</p>
+    <p>{{ book.description }}</p>
+  </div>
+{% empty %}
+  <p>No books found.</p>
+{% endfor %}
+
+
 {% endblock content %}
 

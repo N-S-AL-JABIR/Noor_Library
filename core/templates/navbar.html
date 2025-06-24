@@ -17,21 +17,21 @@
             <a class="nav-link fw-semibold text-dark hover-effect" href="/admin/">Admin</a>
           </li>
           {% endif %}
-          {% comment %} <li class="nav-item">
-            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'transaction_list' %}">Report</a>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'add_book' %}">add_book</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'deposit' %}">Deposit</a>
+            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'add_category' %}">add_category</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'withdraw' %}">Withdraw</a>
+            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'Book_List' %}">Book List</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'loan' %}">Loan</a>
+            {% comment %} <a class="nav-link fw-semibold text-dark hover-effect" href="{% url '' %}">Loan</a> {% endcomment %}
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'balance_transfer' %}">Transfer</a>
-          </li> {% endcomment %}
+            {% comment %} <a class="nav-link fw-semibold text-dark hover-effect" href="{% url '' %}">Transfer</a> {% endcomment %}
+          </li>
         </ul>
   
         <div class="d-flex align-items-center gap-2">
