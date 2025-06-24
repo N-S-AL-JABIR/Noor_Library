@@ -1,0 +1,69 @@
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top py-3 px-3 px-md-4">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold text-dark fs-4" href="{% url 'home' %}">
+        <i class="fa-solid fa-book-open-reader me-1 text-primary"></i> Noor Library
+      </a>
+  
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        {% if request.user.is_authenticated %}
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {% if request.user.is_superuser %}
+          <li class="nav-item">
+            <a class="nav-link fw-semibold text-dark hover-effect" href="/admin/">Admin</a>
+          </li>
+          {% endif %}
+          {% comment %} <li class="nav-item">
+            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'transaction_list' %}">Report</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'deposit' %}">Deposit</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'withdraw' %}">Withdraw</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'loan' %}">Loan</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold text-dark hover-effect" href="{% url 'balance_transfer' %}">Transfer</a>
+          </li> {% endcomment %}
+        </ul>
+  
+        <div class="d-flex align-items-center gap-2">
+          <span class="navbar-text fw-semibold text-dark d-md-inline">
+            Balance: <small class="text-muted">${{ request.user.account.balance }}</small>
+          </span>
+          <a href="{% url 'profile' %}" class="text-primary"><i class="fas fa-user-circle fa-lg"></i></a>
+          <a href="{% url 'logout' %}" class="text-danger"><i class="fas fa-sign-out-alt fa-lg"></i></a>
+          <a href="{% url 'update_profile' %}" class="text-danger"><i class="fas fa-user-edit fa-lg"></i></a>
+        </div>
+        {% else %}
+        <div class="ms-auto d-flex gap-2">
+          <a href="{% url 'login' %}" class="btn btn-primary px-3 rounded-pill">Login</a>
+          <a href="{% url 'register' %}" class="btn btn-outline-dark px-3 rounded-pill">Sign Up</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+  
+  <style>
+    .navbar {
+      transition: all 0.3s ease-in-out;
+    }
+  
+    .nav-link.hover-effect:hover {
+      color: #0d6efd !important;
+      transform: scale(1.05);
+    }
+  
+    .btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+  
