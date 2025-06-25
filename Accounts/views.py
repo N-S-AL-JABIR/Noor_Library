@@ -1,11 +1,14 @@
 from django.shortcuts import render,redirect
 from django.views import View
-from .forms import UserRegistrationForm,UserUpdateForm
+from .forms import UserRegistrationForm,UserUpdateForm, DepositMoneyForm
 from django.views.generic import FormView
 from django.contrib.auth import login,logout
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
 from Book.models import Purchase
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from .models import UserAccount
 
 class UserRegistrationView(FormView):
     template_name = "accounts/registration.html"
@@ -55,3 +58,23 @@ class UserUpdateView(View):
             form.save()
             return redirect("profile")
         return render(request, self.template_name, {"form": form})
+
+
+class DepositMoneyView(LoginRequiredMixin, FormView):
+    template_name = "book/deposit_money.html"
+    form_class = DepositMoneyForm
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        amount = form.cleaned_data["balance"]
+
+        user_account = self.request.user.account  # OneToOneField assumed
+        user_account.balance += amount
+        user_account.save(update_fields=["balance"])
+
+        messages.success(self.request, f"Successfully deposited {amount} units.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Please enter a valid deposit amount.")
+        return super().form_invalid(form)

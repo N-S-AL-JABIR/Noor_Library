@@ -1,5 +1,5 @@
 from django import forms
-from .models import Book , Category
+from .models import Book , Category,ReviewBook
 
 class BookForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
@@ -23,3 +23,23 @@ class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ['name']
+
+class ReviewBookForm(forms.ModelForm):
+    class Meta:
+        model = ReviewBook
+        fields = ['rating', 'comment']
+        widgets = {
+            'rating': forms.NumberInput(attrs={'min': 1, 'max': 5}),
+            'comment': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Write your review here...'}),
+        }
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['rating'].widget.attrs.update({'class': 'form-control'})
+    #     self.fields['comment'].widget.attrs.update({'class': 'form-control'})
+    #     self.fields['rating'].label = "Rating (1-5)"
+    #     self.fields['comment'].label = "Review Comment"
+    def clean_rating(self):
+        rating = self.cleaned_data.get('rating')
+        if rating < 1 or rating > 5:
+            raise forms.ValidationError("Rating must be between 1 and 5.")
+        return rating

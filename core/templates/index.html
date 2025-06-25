@@ -1,32 +1,61 @@
 {% extends "base.html" %}
+{% block title %}Books | Noor Library{% endblock %}
 {% block content %}
-<h1>Books</h1>
 
-<!-- Category Filter -->
-<ul>
-  {% for category in categories %}
-    <li>
-      <a href="{% url 'category_filter' category.slug %}">
-        {% if category == selected_category %}<strong>{% endif %}
-        {{ category.name }}
-        {% if category == selected_category %}</strong>{% endif %}
-      </a>
-    </li>
-  {% endfor %}
-</ul>
+<div class="container py-5">
+  <h1 class="mb-4 fw-bold">Books</h1>
 
-<!-- Book List -->
-{% for book in books %}
-  <div>
-    <h2>{{ book.title }}</h2>
-    <p>Author: {{ book.author }}</p>
-    <p>Category: {{ book.category.name }}</p>
-    <p>{{ book.description }}</p>
+  <!-- 🔍 Category Filter -->
+  <div class="mb-4">
+    <h5 class="mb-2">Filter by Category:</h5>
+    <ul class="nav nav-pills flex-wrap gap-2">
+      {% for category in categories %}
+        <li class="nav-item">
+          <a class="nav-link {% if category == selected_category %}active{% endif %}"
+             href="{% url 'category_filter' category.slug %}">
+            {{ category.name }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
   </div>
-{% empty %}
-  <p>No books found.</p>
-{% endfor %}
 
+  <!-- 📚 Book Cards -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for book in books %}
+    <div class="col">
+      <div class="card h-100 shadow-sm card-hover">
+        {% if book.cover_image %}
+        <img
+          src="{{ book.cover_image.url }}"
+          class="card-img-top"
+          alt="{{ book.title }}"
+          style="height: 250px; object-fit: cover;"
+        />
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ book.title }}</h5>
+          <p class="card-text text-muted mb-1"><strong>Author:</strong> {{ book.author }}</p>
+          <p class="card-text text-muted mb-1"><strong>Category:</strong> {{ book.category.name }}</p>
+          <p class="card-text"><strong>Price:</strong> ${{ book.price }}</p>
+          <p class="card-text small">{{ book.description|truncatechars:100 }}</p>
+        </div>
+        <div class="card-footer bg-white border-0 text-end">
+          <form method="post" action="{% url 'book_detail' book.id %}">
+            {% csrf_token %}
+            <button class="btn btn-primary btn-sm rounded-pill px-3" type="submit">
+              View Book
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col">
+      <div class="alert alert-warning w-100">No books found.</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 
-{% endblock content %}
-
+{% endblock %}

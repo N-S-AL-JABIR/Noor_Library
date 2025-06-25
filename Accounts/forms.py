@@ -4,6 +4,7 @@ from .models import UserAccount
 from .constants import GENDER_CHOICES
 from django.contrib.auth.forms import UserCreationForm
 
+
 class UserRegistrationForm(UserCreationForm):
     first_name = forms.CharField(
         max_length=30,
@@ -18,15 +19,16 @@ class UserRegistrationForm(UserCreationForm):
         widget=forms.TextInput(attrs={"placeholder": "@username", "id": "required"}),
     )
     email = forms.EmailField(
-        widget=forms.EmailInput(attrs={"placeholder": "example@example.com", "id": "required"})
+        widget=forms.EmailInput(
+            attrs={"placeholder": "example@example.com", "id": "required"}
+        )
     )
     gender = forms.ChoiceField(choices=GENDER_CHOICES)
     date_of_birth = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
     address = forms.CharField(
-        widget=forms.Textarea(attrs={"placeholder": "Street,City,Country",'rows': 3}),
+        widget=forms.Textarea(attrs={"placeholder": "Street,City,Country", "rows": 3}),
         required=False,
         max_length=255,
-        
     )
 
     class Meta:
@@ -42,7 +44,8 @@ class UserRegistrationForm(UserCreationForm):
             "date_of_birth",
             "address",
         ]
-    def save(self, commit = True):
+
+    def save(self, commit=True):
         user = super().save(commit=False)
         if commit:
             user.save()
@@ -56,6 +59,7 @@ class UserRegistrationForm(UserCreationForm):
                 address=address,
             )
         return user
+
 
 class UserUpdateForm(forms.ModelForm):
     first_name = forms.CharField(
@@ -72,7 +76,7 @@ class UserUpdateForm(forms.ModelForm):
     gender = forms.ChoiceField(choices=GENDER_CHOICES)
     date_of_birth = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
     address = forms.CharField(
-        widget=forms.Textarea(attrs={"placeholder": "Street,City,Country", 'rows': 3}),
+        widget=forms.Textarea(attrs={"placeholder": "Street,City,Country", "rows": 3}),
         required=False,
     )
 
@@ -86,6 +90,7 @@ class UserUpdateForm(forms.ModelForm):
             "date_of_birth",
             "address",
         ]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance:
@@ -101,13 +106,32 @@ class UserUpdateForm(forms.ModelForm):
                 self.fields["gender"].initial = user_account.gender
                 self.fields["date_of_birth"].initial = user_account.date_of_birth
                 self.fields["address"].initial = user_account.address
+
     def save(self, commit=True):
         user = super().save(commit=False)
         if commit:
             user.save()
-            user_account,created = UserAccount.objects.get_or_create(user=user)
+            user_account, created = UserAccount.objects.get_or_create(user=user)
             user_account.gender = self.cleaned_data.get("gender")
             user_account.date_of_birth = self.cleaned_data.get("date_of_birth")
             user_account.address = self.cleaned_data.get("address")
             user_account.save()
         return user
+
+
+class DepositMoneyForm(forms.Form):
+    balance = forms.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        widget=forms.NumberInput(
+            attrs={"placeholder": "Enter amount to deposit", "id": "required"}
+        ),
+    )
+
+    class Meta:
+        fields = ["balance"]
+    def clean_balance(self):
+        balance = self.cleaned_data.get("balance")
+        if balance <= 0:
+            raise forms.ValidationError("Deposit amount must be greater than zero.")
+        return balance

@@ -43,3 +43,13 @@ class Purchase(models.Model):
 
     def __str__(self):
         return f"{self.user.username} purchased {self.book.title}"
+
+class ReviewBook(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="reviews")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_reviews")
+    rating = models.PositiveIntegerField()
+    comment = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} reviewed {self.book.title} with rating {self.rating}"

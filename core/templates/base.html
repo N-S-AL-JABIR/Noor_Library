@@ -36,13 +36,29 @@
 
     <style>
       body {
-        background: linear-gradient(#90f6d7,rgb(219, 229, 238));
+        background: linear-gradient(120deg, #f9f9f9, #eafcfb);
+        color: #2e2e2e;
+        font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
       }
-
+    
+      /* Optional: Container styling for sections */
+      .section-bg {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+      }
+    
+      /* Page Spinner */
+      #pageSpinner {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(4px);
+      }
+    
       #pageSpinner.fade-out {
         animation: fadeOut 0.5s ease forwards;
       }
-
+    
       @keyframes fadeOut {
         from {
           opacity: 1;
@@ -53,7 +69,15 @@
           visibility: hidden;
         }
       }
+    
+      /* Optional: Card Hover */
+      .card-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+      }
     </style>
+    
   </head>
 
   <body>
