@@ -18,6 +18,15 @@ class BookForm(forms.ModelForm):
             "description",
             "available_copies",
         ]
+    def clean_cover_image(self):
+        cover_image = self.cleaned_data.get("cover_image")
+        if cover_image:
+            # Validate the cover image (e.g., file size, type)
+            if cover_image.size > 0.5 * 1024 * 1024:  # 0.5 MB limit
+                raise forms.ValidationError("Cover image file size must be under 0.5 MB.")
+            if not cover_image.name.endswith(('.png', '.jpg', '.jpeg')):
+                raise forms.ValidationError("Cover image must be a PNG or JPG file.")
+        return cover_image
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -29,7 +38,7 @@ class ReviewBookForm(forms.ModelForm):
         model = ReviewBook
         fields = ['rating', 'comment']
         widgets = {
-            'rating': forms.NumberInput(attrs={'min': 1, 'max': 5}),
+            'rating': forms.NumberInput(attrs={'min': 1, 'max': 5, 'placeholder': 'Rate the book (1-5)'}),
             'comment': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Write your review here...'}),
         }
     # def __init__(self, *args, **kwargs):

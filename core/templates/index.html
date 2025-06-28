@@ -1,61 +1,130 @@
-{% extends "base.html" %}
-{% block title %}Books | Noor Library{% endblock %}
+{% extends "base.html" %} {% block title %}Welcome | Noor Library{% endblock %}
 {% block content %}
 
 <div class="container py-5">
-  <h1 class="mb-4 fw-bold">Books</h1>
-
-  <!-- 🔍 Category Filter -->
-  <div class="mb-4">
-    <h5 class="mb-2">Filter by Category:</h5>
-    <ul class="nav nav-pills flex-wrap gap-2">
-      {% for category in categories %}
-        <li class="nav-item">
-          <a class="nav-link {% if category == selected_category %}active{% endif %}"
-             href="{% url 'category_filter' category.slug %}">
-            {{ category.name }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
-
-  <!-- 📚 Book Cards -->
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    {% for book in books %}
-    <div class="col">
-      <div class="card h-100 shadow-sm card-hover">
-        {% if book.cover_image %}
-        <img
-          src="{{ book.cover_image.url }}"
-          class="card-img-top"
-          alt="{{ book.title }}"
-          style="height: 250px; object-fit: cover;"
+  <div class="row justify-content-center align-items-center min-vh-75">
+    <div class="col-md-10 col-lg-8 text-center">
+      <div class="card shadow-lg rounded-4 p-5 bg-light border-0">
+        <h1 class="display-4 fw-bold text-primary mb-3">
+          <span class="me-2" style="font-size: 2.5rem">📚</span>Welcome to Noor
+          Library
+        </h1>
+        <hr
+          class="mx-auto my-4"
+          style="
+            width: 60px;
+            height: 4px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #bfa05a, #e7d7b7);
+            border: 0;
+          "
         />
-        {% endif %}
-        <div class="card-body">
-          <h5 class="card-title">{{ book.title }}</h5>
-          <p class="card-text text-muted mb-1"><strong>Author:</strong> {{ book.author }}</p>
-          <p class="card-text text-muted mb-1"><strong>Category:</strong> {{ book.category.name }}</p>
-          <p class="card-text"><strong>Price:</strong> ${{ book.price }}</p>
-          <p class="card-text small">{{ book.description|truncatechars:100 }}</p>
+        <p class="lead text-secondary mb-4">
+          Discover a world of knowledge and stories at your fingertips.<br />
+          Explore, read, and enjoy from our vast collection of books across all
+          genres.
+        </p>
+        <!-- Bootstrap 5 bookshelf using icons and flex utilities -->
+        <div
+          class="d-flex flex-row flex-nowrap justify-content-center overflow-auto mb-4 pt-2 pb-2 gap-3"
+        >
+          <div
+            class="d-flex flex-column align-items-center p-2 bg-white rounded shadow-sm"
+            style="min-width: 90px"
+          >
+            <i class="bi bi-book-half text-primary" style="font-size: 2rem"></i>
+            <div
+              class="my-1 w-75 mx-auto"
+              style="height: 8px; background: #bfa05a; border-radius: 4px"
+            ></div>
+            <small class="text-muted">Fiction</small>
+          </div>
+          <div
+            class="d-flex flex-column align-items-center p-2 bg-white rounded shadow-sm"
+            style="min-width: 90px"
+          >
+            <i class="bi bi-book text-success" style="font-size: 2rem"></i>
+            <div
+              class="my-1 w-75 mx-auto"
+              style="height: 8px; background: #bfa05a; border-radius: 4px"
+            ></div>
+            <small class="text-muted">Non-Fiction</small>
+          </div>
+          <div
+            class="d-flex flex-column align-items-center p-2 bg-white rounded shadow-sm"
+            style="min-width: 90px"
+          >
+            <i
+              class="bi bi-journal-bookmark text-danger"
+              style="font-size: 2rem"
+            ></i>
+            <div
+              class="my-1 w-75 mx-auto"
+              style="height: 8px; background: #bfa05a; border-radius: 4px"
+            ></div>
+            <small class="text-muted">History</small>
+          </div>
+          <div
+            class="d-flex flex-column align-items-center p-2 bg-white rounded shadow-sm"
+            style="min-width: 90px"
+          >
+            <i class="bi bi-lightbulb text-warning" style="font-size: 2rem"></i>
+            <div
+              class="my-1 w-75 mx-auto"
+              style="height: 8px; background: #bfa05a; border-radius: 4px"
+            ></div>
+            <small class="text-muted">Science</small>
+          </div>
+          <a href="{% url 'book_list' 'jabir' %}" class="text-decoration-none">
+            <div
+              class="d-flex flex-column align-items-center p-2 bg-white rounded shadow-sm"
+              style="min-width: 90px"
+            >
+              <i class="bi bi-emoji-smile text-info" style="font-size: 2rem"></i>
+              <div
+                class="my-1 w-75 mx-auto"
+                style="height: 8px; background: #bfa05a; border-radius: 4px"
+              ></div>
+              <small class="text-muted">Children</small>
+            </div>
+          </a>
+          
+          <a href="{% url 'all_books' %}" class="text-decoration-none">
+            <div
+              class="d-flex flex-column align-items-center p-2 bg-white rounded shadow-sm"
+              style="min-width: 90px"
+            >
+              <i
+                class="bi bi-three-dots text-secondary"
+                style="font-size: 2rem"
+              ></i>
+              <div
+                class="my-1 w-75 mx-auto"
+                style="height: 8px; background: #bfa05a; border-radius: 4px"
+              ></div>
+              <small class="text-muted">More</small>
+            </div>
+          </a>
         </div>
-        <div class="card-footer bg-white border-0 text-end">
-          <form method="post" action="{% url 'book_detail' book.id %}">
-            {% csrf_token %}
-            <button class="btn btn-primary btn-sm rounded-pill px-3" type="submit">
-              View Book
-            </button>
-          </form>
+        <a
+          href="{% url 'all_books' %}"
+          class="btn btn-primary btn-lg rounded-pill px-5 mt-2 shadow"
+        >
+          <i class="bi bi-search me-2"></i>Browse the Shelves
+        </a>
+        <div class="mt-4 text-muted">
+          <i class="bi bi-door-open me-2"></i>
+          Open daily &bull; Free for all readers
         </div>
       </div>
     </div>
-    {% empty %}
-    <div class="col">
-      <div class="alert alert-warning w-100">No books found.</div>
-    </div>
-    {% endfor %}
   </div>
 </div>
+
+<!-- Bootstrap Icons CDN if not included in base.html -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+/>
 
 {% endblock %}

@@ -1,22 +1,87 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
 {% load crispy_forms_tags %}
-<div class="container mt-4">
-  <h2>Profile</h2>
-  <h1>{{ user.username }}</h1>
-    <p>First Name: {{ user.first_name }}</p>
-    <p>Last Name: {{ user.last_name }}</p>
-    <p>Email: {{ user.email }}</p>
-    <p>Gender: {{ user.account.gender }}</p>
-    <p>Date of Birth: {{ user.account.date_of_birth }}</p>
-    <p>Address: {{ user.account.address }}</p>
-</div>
-{% for purchase in purchases %}
-  <div>
-    <h3>Purchased Book: {{ purchase.book.title }}</h3>
-    <p>Purchase Date: {{ purchase.purchase_date }}</p>
-  </div>
-{% empty %}
-  <p>No purchases found.</p>
-{% endfor %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
 
+      <!-- Profile Card -->
+      <div class="card shadow-lg border-0 rounded-4 mb-4 overflow-hidden">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3 px-4">
+          <h2 class="mb-0">
+            <i class="bi bi-person-circle me-2"></i>{{ user.username }}'s Profile
+          </h2>
+          <a href="{% url 'update_profile' %}" class="btn btn-light btn-sm rounded-pill">
+            <i class="bi bi-pencil-square me-1"></i>Edit
+          </a>
+        </div>
+        <div class="card-body bg-light p-4">
+          <div class="row">
+            <!-- Optional Avatar Placeholder -->
+            {% comment %}
+            <div class="col-md-4 text-center mb-3 mb-md-0">
+              <img src="{% static 'image/avatar_placeholder.jpg' %}" alt="Avatar" class="img-fluid rounded-circle border shadow-sm" style="max-width: 140px;">
+            </div>
+            {% endcomment %}
+            <div class="col-md-12">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <p class="mb-1"><strong>First Name:</strong></p>
+                  <p>{{ user.first_name }}</p>
+                </div>
+                <div class="col-md-6">
+                  <p class="mb-1"><strong>Last Name:</strong></p>
+                  <p>{{ user.last_name }}</p>
+                </div>
+                <div class="col-md-6">
+                  <p class="mb-1"><strong>Email:</strong></p>
+                  <p>{{ user.email }}</p>
+                </div>
+                <div class="col-md-6">
+                  <p class="mb-1"><strong>Gender:</strong></p>
+                  <p>{{ user.account.gender }}</p>
+                </div>
+                <div class="col-md-6">
+                  <p class="mb-1"><strong>Date of Birth:</strong></p>
+                  <p>{{ user.account.date_of_birth }}</p>
+                </div>
+                <div class="col-md-12">
+                  <p class="mb-1"><strong>Address:</strong></p>
+                  <p>{{ user.account.address }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Purchase History -->
+      {% if purchases %}
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-secondary text-white py-3 px-4">
+          <h4 class="mb-0">
+            <i class="bi bi-book-half me-2"></i>Borrowed Books
+          </h4>
+        </div>
+        <div class="card-body bg-light p-4">
+          {% for purchase in purchases %}
+          <div class="mb-4 pb-3 border-bottom">
+            <h5 class="mb-1">📚 {{ purchase.book.title }}</h5>
+            <p class="mb-1 text-muted"><strong>Borrowed on:</strong> {{ purchase.purchase_date }}</p>
+            <a href="{% url 'return_book' purchase.book.id %}" class="btn btn-outline-danger btn-sm rounded-pill">
+              <i class="bi bi-arrow-return-left me-1"></i>Return Book
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% else %}
+      <div class="alert alert-info text-center mt-4" role="alert">
+        <i class="bi bi-emoji-frown me-2"></i>No books borrowed yet.
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
 {% endblock %}

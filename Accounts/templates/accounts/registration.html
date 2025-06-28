@@ -1,12 +1,40 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
 {% load crispy_forms_tags %}
-<div class="container mt-4">
-  <h2>Registration</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-primary">Register</button>
-  </form>
-</div>
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        <!-- Header -->
+        <div class="bg-success text-white text-center py-4">
+          <h3 class="mb-0 fw-bold">
+            <i class="bi bi-person-plus-fill me-2"></i>Create an Account
+          </h3>
+          <p class="mb-0 small">Join the Noor Library to borrow and explore books</p>
+        </div>
 
+        <!-- Form Body -->
+        <div class="card-body bg-light p-4">
+          <form method="post" autocomplete="off">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-success btn-lg rounded-pill">
+                <i class="bi bi-check2-circle me-2"></i>Register
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer Links -->
+      <div class="text-center mt-4">
+        <div class="text-muted small mb-2">Already have an account?</div>
+        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm rounded-pill px-4">
+          <i class="bi bi-box-arrow-in-right me-1"></i> Login Here
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

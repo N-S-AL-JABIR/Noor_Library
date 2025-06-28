@@ -23,9 +23,8 @@ from core.views import HomeView
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", HomeView.as_view(), name="home"),
-    path("accounts/", include("Accounts.urls")),
-    path("books/", include("Book.urls")),
-    path("categories/<slug:cat_slug>/", HomeView.as_view(), name="category_filter"),
+    path("", include("Accounts.urls")), 
+    path("", include("Book.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
