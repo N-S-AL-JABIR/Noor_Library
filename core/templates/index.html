@@ -28,6 +28,7 @@
         <div
           class="d-flex flex-row flex-nowrap justify-content-center overflow-auto mb-4 pt-2 pb-2 gap-3"
         >
+          <a href="{% url 'book_list' 'fiction' %}" class="text-decoration-none">
           <div
             class="d-flex flex-column align-items-center p-2 bg-white rounded shadow-sm"
             style="min-width: 90px"
@@ -39,31 +40,37 @@
             ></div>
             <small class="text-muted">Fiction</small>
           </div>
-          <div
+          </a>
+          <a href="{% url 'book_list' 'non-fiction' %}" class="text-decoration-none">
+            <div
             class="d-flex flex-column align-items-center p-2 bg-white rounded shadow-sm"
             style="min-width: 90px"
-          >
+            >
             <i class="bi bi-book text-success" style="font-size: 2rem"></i>
             <div
-              class="my-1 w-75 mx-auto"
-              style="height: 8px; background: #bfa05a; border-radius: 4px"
+            class="my-1 w-75 mx-auto"
+            style="height: 8px; background: #bfa05a; border-radius: 4px"
             ></div>
             <small class="text-muted">Non-Fiction</small>
           </div>
-          <div
+        </a>
+          <a href="{% url 'book_list' 'history' %}" class="text-decoration-none">
+            <div
             class="d-flex flex-column align-items-center p-2 bg-white rounded shadow-sm"
             style="min-width: 90px"
-          >
+            >
             <i
-              class="bi bi-journal-bookmark text-danger"
-              style="font-size: 2rem"
+            class="bi bi-journal-bookmark text-danger"
+            style="font-size: 2rem"
             ></i>
             <div
-              class="my-1 w-75 mx-auto"
-              style="height: 8px; background: #bfa05a; border-radius: 4px"
+            class="my-1 w-75 mx-auto"
+            style="height: 8px; background: #bfa05a; border-radius: 4px"
             ></div>
             <small class="text-muted">History</small>
           </div>
+        </a>
+          <a href="{% url 'book_list' 'science' %}" class="text-decoration-none">
           <div
             class="d-flex flex-column align-items-center p-2 bg-white rounded shadow-sm"
             style="min-width: 90px"
@@ -75,7 +82,8 @@
             ></div>
             <small class="text-muted">Science</small>
           </div>
-          <a href="{% url 'book_list' 'Children' %}" class="text-decoration-none">
+          </a>
+          <a href="{% url 'book_list' 'children' %}" class="text-decoration-none">
             <div
               class="d-flex flex-column align-items-center p-2 bg-white rounded shadow-sm"
               style="min-width: 90px"
